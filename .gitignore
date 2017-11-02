@@ -26,3 +26,6 @@ target/
 
 
 viv.iml
+db/
+file-uploads/
+.vertx

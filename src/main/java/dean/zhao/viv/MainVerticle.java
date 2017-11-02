@@ -1,21 +1,29 @@
 package dean.zhao.viv;
 
-import dean.zhao.viv.router.Builder;
 import io.vertx.core.AbstractVerticle;
-import io.vertx.ext.web.Router;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Future;
 
 public class MainVerticle extends AbstractVerticle {
-
     @Override
-    public void start() throws Exception {
-        Router router = Builder.build(vertx);
+    public void start(final Future<Void> startFutre) throws Exception {
+        final Future<String> dbVerticleDeployment = Future.future();
 
-        vertx.createHttpServer().requestHandler(router::accept).listen(7777);
-        System.out.println("HTTP server started on port 7777");
-    }
+        this.vertx.deployVerticle(new WikiDatabaseVerticle(), dbVerticleDeployment.completer());
 
-    @Override
-    public void stop() throws Exception{
-        System.out.println("HTTP server stopped");
+        dbVerticleDeployment.compose(id -> {
+            final Future<String> httpVerticleDeployment = Future.future();
+            this.vertx.deployVerticle("dean.zhao.viv.HttpServerVerticle",
+                    new DeploymentOptions().setInstances(2),
+                    httpVerticleDeployment.completer());
+
+            return httpVerticleDeployment;
+        }).setHandler(ar -> {
+            if (ar.failed()) {
+                startFutre.fail(ar.cause());
+            } else {
+                startFutre.complete();
+            }
+        });
     }
 }

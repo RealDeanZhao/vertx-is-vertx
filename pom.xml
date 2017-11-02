@@ -36,21 +36,24 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                          <transformers>
-                              <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                  <manifestEntries>
-                                      <Main-Class>io.vertx.core.Launcher</Main-Class>
-                                      <Main-Verticle>dean.zhao.viv.MainVerticle</Main-Verticle>
-                                  </manifestEntries>
-                              </transformer>
-                              <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                  <resource>META-INF/services/io.vertx.core.spi.VerticleFactory</resource>
-                              </transformer>
-                          </transformers>
-                          <artifactSet>
-                          </artifactSet>
-                          <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar</outputFile>
-                      </configuration>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <manifestEntries>
+                                        <Main-Class>io.vertx.core.Launcher</Main-Class>
+                                        <Main-Verticle>dean.zhao.viv.HttpServerVerticle</Main-Verticle>
+                                    </manifestEntries>
+                                </transformer>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/services/io.vertx.core.spi.VerticleFactory</resource>
+                                </transformer>
+                            </transformers>
+                            <artifactSet>
+                            </artifactSet>
+                            <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar
+                            </outputFile>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -63,7 +66,7 @@
                     <mainClass>io.vertx.core.Launcher</mainClass>
                     <arguments>
                         <argument>run</argument>
-                        <argument>dean.zhao.viv.MainVerticle</argument>
+                        <argument>dean.zhao.viv.HttpServerVerticle</argument>
                     </arguments>
                 </configuration>
             </plugin>
@@ -72,25 +75,49 @@
     </build>
 
     <dependencies>
-        
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-unit</artifactId>
-                <version>${vertx.version}</version>
-            </dependency>
-        
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-core</artifactId>
-                <version>${vertx.version}</version>
-            </dependency>
-        
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-web</artifactId>
-                <version>${vertx.version}</version>
-            </dependency>
-        
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-jdbc-client</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-unit</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-core</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web-templ-freemarker</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.rjeschke</groupId>
+            <artifactId>txtmark</artifactId>
+            <version>0.13</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
     </dependencies>
 
 </project>
